@@ -9,7 +9,7 @@ import {
 import Cookies from 'js-cookie';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import CheckoutWizard from './checkoutWizard';
+import CheckoutWizard from './CheckoutWizard';
 import { Store } from '../../utils/Store';
 import useStyles from '../../utils/styles';
 

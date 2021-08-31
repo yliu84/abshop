@@ -22,7 +22,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import useStyles from '../../utils/styles';
 import { Store } from '../../utils/Store';
-import CheckoutWizard from './checkoutWizard';
+import CheckoutWizard from './CheckoutWizard';
 import { getError } from '../../utils/error';
 import { useSnackbar } from 'notistack';
 

@@ -14,7 +14,7 @@ import { useSnackbar } from 'notistack';
 import useStyles from '../../utils/styles';
 import { useRouter } from 'next/router';
 import { Store } from '../../utils/Store';
-import CheckoutWizard from './checkoutWizard';
+import CheckoutWizard from './CheckoutWizard';
 
 const Payment = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
