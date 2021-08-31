@@ -49,7 +49,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login');
+      router.push('/auth/login');
     }
     const fetchData = async () => {
       try {

@@ -20,13 +20,14 @@ const ProductScreen = (props) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const { params } = context;
-  const { slug } = params;
+export async function getServerSideProps({ params }) {
+  const productId = params.id;
 
   await db.connect();
-  const product = await Product.findOne({ slug }).lean();
+  const product = await Product.findById(productId).lean();
   await db.disconnect();
+
+  console.log(product);
 
   return {
     props: {

@@ -30,6 +30,8 @@ const Cart = () => {
 
   const router = useRouter();
 
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.product.countInStock < quantity) {
@@ -147,7 +149,9 @@ const Cart = () => {
                 <ListItem>
                   <Typography>
                     Subtotal: $
-                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                    {round2(
+                      cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+                    )}
                   </Typography>
                 </ListItem>
                 <ListItem>

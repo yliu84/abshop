@@ -35,7 +35,7 @@ const ProductItem = ({ product }) => {
   return (
     <Grid item md={3} key={product.name}>
       <Card>
-        <NextLink href={`/product/${product.slug}`} passHref>
+        <NextLink href={`/product/${product._id}`} passHref>
           <CardActionArea>
             <CardMedia
               component='img'

@@ -75,6 +75,7 @@ const updateProduct = async (req, res) => {
 };
 
 const newProduct = async (req, res) => {
+  await db.connect();
   const images = req.body.images;
 
   let imagesLinks = [];
@@ -94,6 +95,7 @@ const newProduct = async (req, res) => {
 
   const product = await Product.create(req.body);
 
+  await db.disconnect();
   res.status(200).json({
     success: true,
     product,

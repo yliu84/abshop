@@ -55,7 +55,7 @@ const NewProduct = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      return router.push('/login');
+      return router.push('/auth/login');
     }
   }, []);
 
@@ -81,7 +81,6 @@ const NewProduct = () => {
 
   const submitHandler = async ({
     name,
-    slug,
     price,
     category,
     brand,
@@ -91,7 +90,6 @@ const NewProduct = () => {
     closeSnackbar();
     const productData = {
       name,
-      slug,
       price,
       category,
       brand,
@@ -178,27 +176,6 @@ const NewProduct = () => {
                           label='Name'
                           error={Boolean(errors.name)}
                           helperText={errors.name ? 'Name is required' : ''}
-                          {...field}
-                        ></TextField>
-                      )}
-                    ></Controller>
-                  </ListItem>
-                  <ListItem>
-                    <Controller
-                      name='slug'
-                      control={control}
-                      defaultValue=''
-                      rules={{
-                        required: true,
-                      }}
-                      render={({ field }) => (
-                        <TextField
-                          variant='outlined'
-                          fullWidth
-                          id='slug'
-                          label='Slug'
-                          error={Boolean(errors.slug)}
-                          helperText={errors.slug ? 'Slug is required' : ''}
                           {...field}
                         ></TextField>
                       )}
