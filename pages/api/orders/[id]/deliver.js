@@ -1,5 +1,5 @@
 import nc from 'next-connect';
-import onError from '../../../../utils/error';
+import { onError } from '../../../../utils/error';
 import { isAuth } from '../../../../utils/auth';
 import { updateOrderToDelivered } from '../../../../controllers/adminControllers';
 

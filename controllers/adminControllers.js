@@ -1,7 +1,7 @@
 import db from '../config/db';
-import Order from '../models/Order';
+import Order from '../models/order';
 import Product from '../models/product';
-import User from '../models/User';
+import User from '../models/user';
 
 const getAdminSummary = async (req, res) => {
   await db.connect();
