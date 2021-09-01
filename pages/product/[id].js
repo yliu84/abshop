@@ -24,7 +24,7 @@ export async function getServerSideProps({ params }) {
   const productId = params.id;
 
   await db.connect();
-  const product = await Product.findById(productId).lean();
+  const product = await Product.findById(productId, '-reviews').lean();
   await db.disconnect();
 
   console.log(product);

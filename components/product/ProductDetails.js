@@ -1,7 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import {
   Link,
   Typography,
@@ -12,18 +14,65 @@ import {
   Card,
   Select,
   MenuItem,
+  TextField,
+  CircularProgress,
 } from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
 
 import useStyles from '../../utils/styles';
 import { Store } from '../../utils/Store';
-import { useRouter } from 'next/router';
+import { getError } from '../../utils/error';
 
 const ProductDetails = ({ product }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
+  const { userInfo } = state;
   const classes = useStyles();
 
   const [quantity, setQuantity] = useState(1);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post(
+        `/api/products/${product._id}/reviews`,
+        {
+          rating,
+          comment,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      setLoading(false);
+      enqueueSnackbar('Review submitted successfully', { variant: 'success' });
+      fetchReviews();
+    } catch (err) {
+      setLoading(false);
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/${product._id}/reviews`);
+      setReviews(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
 
   if (!product) {
     return <div>Product Not Found</div>;
@@ -78,9 +127,10 @@ const ProductDetails = ({ product }) => {
               <Typography>Brand: {product.brand}</Typography>
             </ListItem>
             <ListItem>
-              <Typography>
-                Rating: {product.rating} stars ({product.numReviews} reviews)
-              </Typography>
+              <Rating value={product.ratings} readOnly></Rating>
+              <Link href='#reviews'>
+                <Typography>({product.numReviews} reviews)</Typography>
+              </Link>
             </ListItem>
             <ListItem>
               <Typography> Description: {product.description}</Typography>
@@ -145,6 +195,79 @@ const ProductDetails = ({ product }) => {
           </Card>
         </Grid>
       </Grid>
+      <List>
+        <ListItem>
+          <Typography name='reviews' id='reviews' variant='h2'>
+            Customer Reviews
+          </Typography>
+        </ListItem>
+        {reviews.length === 0 && <ListItem>No review</ListItem>}
+        {reviews.map((review) => (
+          <ListItem key={review._id}>
+            <Grid container>
+              <Grid item className={classes.reviewItem}>
+                <Typography>
+                  <strong>{review.name}</strong>
+                </Typography>
+                <Typography>{review.createdAt.substring(0, 10)}</Typography>
+              </Grid>
+              <Grid item>
+                <Rating value={review.rating} readOnly></Rating>
+                <Typography>{review.comment}</Typography>
+              </Grid>
+            </Grid>
+          </ListItem>
+        ))}
+        <ListItem>
+          {userInfo ? (
+            <form onSubmit={submitHandler} className={classes.reviewForm}>
+              <List>
+                <ListItem>
+                  <Typography variant='h2'>Leave your review</Typography>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    multiline
+                    variant='outlined'
+                    fullWidth
+                    name='review'
+                    label='Enter comment'
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <Rating
+                    name='simple-controlled'
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                  >
+                    Submit
+                  </Button>
+
+                  {loading && <CircularProgress></CircularProgress>}
+                </ListItem>
+              </List>
+            </form>
+          ) : (
+            <Typography variant='h2'>
+              Please{' '}
+              <Link href={`/auth/login?redirect=/product/${product._id}`}>
+                login
+              </Link>{' '}
+              to write a review
+            </Typography>
+          )}
+        </ListItem>
+      </List>
     </>
   );
 };

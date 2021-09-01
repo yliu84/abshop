@@ -9,6 +9,7 @@ import {
   CardActions,
   Button,
 } from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
 import NextLink from 'next/link';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
@@ -33,7 +34,7 @@ const ProductItem = ({ product }) => {
   };
 
   return (
-    <Grid item md={3} key={product.name}>
+    <Grid item md={3} sm={6} xs={12} key={product.name}>
       <Card>
         <NextLink href={`/product/${product._id}`} passHref>
           <CardActionArea>
@@ -44,6 +45,7 @@ const ProductItem = ({ product }) => {
             ></CardMedia>
             <CardContent>
               <Typography>{product.name}</Typography>
+              <Rating value={product.ratings} readOnly></Rating>
             </CardContent>
           </CardActionArea>
         </NextLink>

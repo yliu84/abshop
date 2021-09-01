@@ -1,10 +1,12 @@
 import { Grid } from '@material-ui/core';
+import dynamic from 'next/dynamic';
+
 import Layout from '../components/Layout';
 import ProductItem from '../components/product/ProductItem';
 import db from '../config/db';
 import Product from '../models/product';
 
-export default function Home(props) {
+const Home = (props) => {
   const { products } = props;
   return (
     <Layout>
@@ -18,11 +20,11 @@ export default function Home(props) {
       </div>
     </Layout>
   );
-}
+};
 
 export async function getServerSideProps() {
   await db.connect();
-  const products = await Product.find({}).lean();
+  const products = await Product.find({}, '-reviews').lean();
   await db.disconnect();
 
   return {
@@ -31,3 +33,5 @@ export async function getServerSideProps() {
     },
   };
 }
+
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
