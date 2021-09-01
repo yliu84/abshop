@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: '#203040',
     '& a': {
@@ -59,6 +59,43 @@ const useStyles = makeStyles({
   toolbar: {
     justifyContent: 'space-between',
   },
-});
+  menuButton: { padding: 0 },
+  mt1: { marginTop: '1rem' },
+  // search
+  searchSection: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      width: 400,
+    },
+  },
+  searchForm: {
+    border: '1px solid #ffffff',
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  searchInput: {
+    paddingLeft: 5,
+    color: '#000000',
+    '& ::placeholder': {
+      color: '#606060',
+    },
+    width: '90%',
+  },
+  iconButton: {
+    backgroundColor: '#f8c040',
+    padding: 5,
+    borderRadius: '0 5px 5px 0',
+    '& span': {
+      color: '#000000',
+    },
+  },
+  sort: {
+    marginRight: 5,
+  },
+}));
 
 export default useStyles;
