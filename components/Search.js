@@ -99,7 +99,7 @@ const Search = ({ products, countProducts, categories, brands, pages }) => {
   return (
     <>
       <Grid className={classes.mt1} container spacing={1}>
-        <Grid item md={3}>
+        <Grid item md={3} xs={12}>
           <List>
             <ListItem>
               <Box className={classes.fullWidth}>

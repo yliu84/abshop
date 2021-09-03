@@ -48,6 +48,14 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      location: {
+        lat: String,
+        lng: String,
+        address: String,
+        name: String,
+        vicinity: String,
+        googleAddressId: String,
+      },
     },
     paymentMethod: {
       type: String,

@@ -10,12 +10,15 @@ import {
   Button,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import NextLink from 'next/link';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
+import useStyles from '../../utils/styles';
 
 const ProductItem = ({ product }) => {
   const { state, dispatch } = useContext(Store);
+  const classes = useStyles();
 
   const addToCartHandler = async () => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
@@ -34,7 +37,7 @@ const ProductItem = ({ product }) => {
   };
 
   return (
-    <Grid item md={3} sm={6} xs={12} key={product.name}>
+    <Grid item md={3} sm={4} xs={6} key={product.name}>
       <Card>
         <NextLink href={`/product/${product._id}`} passHref>
           <CardActionArea>
@@ -49,10 +52,10 @@ const ProductItem = ({ product }) => {
             </CardContent>
           </CardActionArea>
         </NextLink>
-        <CardActions>
+        <CardActions className={classes.productItemActions}>
           <Typography>${product.price}</Typography>
           <Button size='small' color='primary' onClick={addToCartHandler}>
-            Add to cart
+            <AddShoppingCartIcon />
           </Button>
         </CardActions>
       </Card>

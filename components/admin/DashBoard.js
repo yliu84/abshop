@@ -44,6 +44,8 @@ const DashBoard = () => {
     error: '',
   });
 
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+
   useEffect(() => {
     if (!userInfo) {
       router.push('/auth/login');
@@ -105,7 +107,7 @@ const DashBoard = () => {
                       <Card raised>
                         <CardContent>
                           <Typography variant='h1'>
-                            ${summary.ordersPrice}
+                            ${round2(summary.ordersPrice)}
                           </Typography>
                           <Typography>Sales</Typography>
                         </CardContent>

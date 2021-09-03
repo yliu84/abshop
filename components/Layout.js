@@ -140,7 +140,7 @@ const Layout = ({ children, title = 'Buy Best Product Online' }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBar position='static' className={classes.navbar}>
+        <AppBar position='sticky' className={classes.navbar}>
           <Toolbar className={classes.toolbar}>
             <Box display='flex' alignItems='center'>
               <IconButton

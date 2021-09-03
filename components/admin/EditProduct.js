@@ -51,6 +51,7 @@ const EditProduct = ({ productId }) => {
     formState: { errors },
     setValue,
   } = useForm();
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
   const classes = useStyles();

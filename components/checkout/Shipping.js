@@ -19,6 +19,7 @@ const Shipping = () => {
     control,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm();
 
   const router = useRouter();
@@ -30,18 +31,45 @@ const Shipping = () => {
     cart: { shippingAddress },
   } = state;
 
+  const { location } = shippingAddress;
+
   useEffect(() => {
     if (!userInfo) {
       router.push('/auth/login?redirect=/shipping');
     }
-    setValue('fullName', shippingAddress.fullName);
-    setValue('address', shippingAddress.address);
-    setValue('city', shippingAddress.city);
-    setValue('postalCode', shippingAddress.postalCode);
-    setValue('country', shippingAddress.country);
+
+    setValue('fullName', shippingAddress.fullName || '');
+    setValue('address', shippingAddress.address || '');
+    setValue('city', shippingAddress.city || '');
+    setValue('postalCode', shippingAddress.postalCode || '');
+    setValue('country', shippingAddress.country || '');
   }, []);
 
   const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+    dispatch({
+      type: 'SAVE_SHIPPING_ADDRESS',
+      payload: { fullName, address, city, postalCode, country, location },
+    });
+    Cookies.set(
+      'shippingAddress',
+      JSON.stringify({
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+        location,
+      })
+    );
+    router.push('/payment');
+  };
+
+  const chooseLocationHandler = () => {
+    const fullName = getValues('fullName');
+    const address = getValues('address');
+    const city = getValues('city');
+    const postalCode = getValues('postalCode');
+    const country = getValues('country');
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
       payload: { fullName, address, city, postalCode, country },
@@ -54,9 +82,10 @@ const Shipping = () => {
         city,
         postalCode,
         country,
+        location,
       })
     );
-    router.push('/payment');
+    router.push('/map');
   };
 
   return (
@@ -158,7 +187,7 @@ const Shipping = () => {
               defaultValue=''
               rules={{
                 required: true,
-                minLength: 5,
+                minLength: 6,
               }}
               render={({ field }) => (
                 <TextField
@@ -206,6 +235,18 @@ const Shipping = () => {
                 ></TextField>
               )}
             ></Controller>
+          </ListItem>
+          <ListItem>
+            <Button
+              variant='contained'
+              type='button'
+              onClick={chooseLocationHandler}
+            >
+              Choose on map
+            </Button>
+            <Typography>
+              {location.lat && `${location.lat}, ${location.lat}`}
+            </Typography>
           </ListItem>
           <ListItem>
             <Button variant='contained' type='submit' fullWidth color='primary'>

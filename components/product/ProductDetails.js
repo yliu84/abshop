@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
+import Carousel from 'react-material-ui-carousel';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import {
@@ -105,13 +106,18 @@ const ProductDetails = ({ product }) => {
       </div>
       <Grid container spacing={1}>
         <Grid item md={4} xs={12}>
-          <Image
-            src={product.images[0].url}
-            alt={product.name}
-            width={640}
-            height={640}
-            layout='responsive'
-          ></Image>
+          <Carousel className={classes.mt1} animation='slide'>
+            {product.images.map((image) => (
+              <Image
+                key={image.url}
+                src={image.url}
+                alt={product.name}
+                width={640}
+                height={640}
+                layout='responsive'
+              ></Image>
+            ))}
+          </Carousel>
         </Grid>
         <Grid item md={5} xs={12}>
           <List>
